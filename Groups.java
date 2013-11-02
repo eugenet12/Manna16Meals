@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class Groups {
 	private int numberOfPeople;
@@ -13,6 +15,20 @@ public class Groups {
 		group.add(s);
 		numberOfPeople++;
 	}
+	
+	public void writeCSV(FileWriter writer) {
+		try {
+			for (Student s: group) {
+				writer.append(s.getName());
+				writer.append(',');
+				writer.append(s.getEmail());
+				writer.append('\n');
+			}
+			writer.append('\n');
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int getNumberOfPeople() {
 		return numberOfPeople;
@@ -25,6 +41,5 @@ public class Groups {
 			people += s.getName() + ": " + s.getEmail() + "\n";
 		}
 		return people;
-	}
-	
+	}	
 }

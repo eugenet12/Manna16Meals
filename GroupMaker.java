@@ -1,81 +1,94 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.utils.ArrayList;
-import java.utils.Collections;
-import java.uit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 
 public class GroupMaker {
 
-	ArrayList<Student> listOfStudents = new ArrayList<Student>();
-	ArrayList<Groups> listOfGroups = new ArrayList<Groups>();
-	String csvSplitBy = ",";
+      final static private int GROUP_SIZE = 3;
+      static private ArrayList<Student> listOfStudents = new ArrayList<Student>();
+      static private ArrayList<Groups> listOfGroups = new ArrayList<Groups>();
+      static private String csvSplitBy = ",";
 
-	public static void main(String[] args) {
-		try {
-			String fileName = 
-			FileWriter writer = new FileWriter(sFileName);
+      public static void main(String[] args) {
+         try {
+            Calendar cal = Calendar.getInstance();
+            String fileName = "csv/groupings" + cal.get(Calendar.MONTH) + cal.get(Calendar.DAY_OF_MONTH)
+               + ".csv";
+            FileWriter writer = new FileWriter(fileName);
 
-			FileReader info = new FileReader(new File(args[0]));
-			// FileReader set1 = new FileReader(new File(args[1]));
-			// FileReader set2 = new FileReader(new File(args[2]));
-			// FileReader set3 = new FileReader(new File(args[3]));
+            FileReader info = new FileReader(new File(args[0]));
+            // FileReader set1 = new FileReader(new File(args[1]));
+            // FileReader set2 = new FileReader(new File(args[2]));
+            // FileReader set3 = new FileReader(new File(args[3]));
 
-			readPeople(info);
+            writer.append("Name");
+            writer.append(",");
+            writer.append("Email");
+            writer.append("\n");
 
-			createGroups();
-			// createGroups(writer, info, set1, set2, set3);
-			
-			for(Groups g: listOfGroups) {
-				g.writeCSV(writer);
-			}
+            readPeople(info);
 
-			writer.flush();
-			writer.close();
-			info.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-	}
+            createGroups();
+            // createGroups(writer, info, set1, set2, set3);
 
-	private static void readPeople(FileReader info) {
-		br = new BufferedReader(info);
+            for(Groups g : listOfGroups) {
+               g.writeCSV(writer);
+            }
 
-		line = br.readLine(); // read header line
+            writer.flush();
+            writer.close();
+            info.close();
+         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
 
-		while ((line = br.readLine()) != null) {
+      private static void readPeople(FileReader info) {
+         try {
+            BufferedReader br = new BufferedReader(info);
 
-			String[] personInfo = line.split(csvSplitBy);
+            String line = br.readLine(); // read header line
 
-			Student s = new Student(personInfo[0], personInfo[1]);
-			listOfStudents.add(s);
-		}
-	}
+            while ((line = br.readLine()) != null) {
 
-	private static void createGroups() {
-		Collections.shuffle(listOfStudents);
+               String[] personInfo = line.split(csvSplitBy);
 
-		int n = listOfStudents.size();
-		boolean remain1, remain2;
+               Student s = new Student(personInfo[1], personInfo[2]);
+               listOfStudents.add(s);
+            }
+         } catch(IOException e) {
+            e.printStackTrace();
+         }
+      }
 
-		if (n % 3 == 1) remain1 = true;
-		if (n % 3 == 2) {
-			reamin1 = true;
-			remain2 = true;
-		}
+      private static void createGroups() {
+         Collections.shuffle(listOfStudents);
 
-		for(int index = 0; index/3 < n; index += 3) {
-			Groups groups = new Groups();
-			groups.addStudent(listOfStudents.get(index));
-			groups.addStudent(listOfStudents.get(index + 1));
-			groups.addStudent(listOfStudents.get(index + 2));
-			listOfGroups.add(groups));
-		}
-		if (remain2) listOfGroups.get(1).addStudent(listOfStudents.get(n - 2));
-		if (remain1) listOfGroups.get(0).addStudent(listOfStudents.get(n - 1));
-	}
+         int n = listOfStudents.size();
+         boolean remain1 = false, remain2 = false;
+
+         if (n % 3 == 1) remain1 = true;
+         if (n % 3 == 2) {
+            remain1 = true;
+            remain2 = true;
+         }
+
+         for(int index = 0; index < n - 2; index += 3) {
+            Groups groups = new Groups();
+            groups.addStudent(listOfStudents.get(index));
+            groups.addStudent(listOfStudents.get(index + 1));
+            groups.addStudent(listOfStudents.get(index + 2));
+            listOfGroups.add(groups);
+         }
+         if (remain2) listOfGroups.get(1).addStudent(listOfStudents.get(n - 2));
+         if (remain1) listOfGroups.get(0).addStudent(listOfStudents.get(n - 1));
+      }
 }

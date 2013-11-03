@@ -1,0 +1,2 @@
+Method for comparing two groupings
+Scalable group numbers

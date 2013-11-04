@@ -26,12 +26,12 @@ public class GroupMaker {
             // FileReader set1 = new FileReader(new File(args[1]));
             // FileReader set2 = new FileReader(new File(args[2]));
             // FileReader set3 = new FileReader(new File(args[3]));
-
+            
             writer.append("Name");
             writer.append(",");
             writer.append("Email");
             writer.append("\n");
-
+            
             readPeople(info);
 
             createGroups();

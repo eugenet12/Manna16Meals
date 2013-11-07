@@ -11,6 +11,8 @@ import java.util.Collections;
 public class GroupMaker {
 
       final static private int GROUP_SIZE = 3;
+      final static private String FILEPATH = "csv/";
+      
       static private ArrayList<Student> listOfStudents = new ArrayList<Student>();
       static private ArrayList<Groups> listOfGroups = new ArrayList<Groups>();
       static private String csvSplitBy = ",";
@@ -18,8 +20,8 @@ public class GroupMaker {
       public static void main(String[] args) {
          try {
             Calendar cal = Calendar.getInstance();
-            String fileName = "csv/groupings" + cal.get(Calendar.MONTH) + cal.get(Calendar.DAY_OF_MONTH)
-               + ".csv";
+            String fileName = FILEPATH + "groupings" + cal.get(Calendar.MONTH) +
+            		cal.get(Calendar.DAY_OF_MONTH) + ".csv";
             FileWriter writer = new FileWriter(fileName);
 
             FileReader info = new FileReader(new File(args[0]));
@@ -33,7 +35,8 @@ public class GroupMaker {
             writer.append("\n");
             
             readPeople(info);
-
+            assert(listOfStudents.size() >= GROUP_SIZE);
+            
             createGroups();
             // createGroups(writer, info, set1, set2, set3);
 

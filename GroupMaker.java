@@ -76,22 +76,20 @@ public class GroupMaker {
          Collections.shuffle(listOfStudents);
 
          int n = listOfStudents.size();
-         boolean remain1 = false, remain2 = false;
+         int remainder = n % GROUP_SIZE;
 
-         if (n % 3 == 1) remain1 = true;
-         if (n % 3 == 2) {
-            remain1 = true;
-            remain2 = true;
-         }
-
-         for(int index = 0; index < n - 2; index += 3) {
+         for(int index = 0; index < n;) {
             Groups groups = new Groups();
-            groups.addStudent(listOfStudents.get(index));
-            groups.addStudent(listOfStudents.get(index + 1));
-            groups.addStudent(listOfStudents.get(index + 2));
+            int groupSize = GROUP_SIZE;
+            if (remainder > 0) {
+            	groupSize += 1;
+            	remainder--;
+            }
+            for (int j = 0; j < groupSize; j++) {
+            	groups.addStudent(listOfStudents.get(index + j));
+            }
             listOfGroups.add(groups);
+            index += groupSize;
          }
-         if (remain2) listOfGroups.get(1).addStudent(listOfStudents.get(n - 2));
-         if (remain1) listOfGroups.get(0).addStudent(listOfStudents.get(n - 1));
       }
 }

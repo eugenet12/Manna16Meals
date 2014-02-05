@@ -4,3 +4,12 @@
 *.jar
 *.war
 *.ear
+
+# Temp Files #
+*~
+
+# csv Files with info #
+*.csv*
+*.xls
+*.xlsx
+*grouping*
